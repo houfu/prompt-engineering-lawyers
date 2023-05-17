@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Lato', sans-serif;
+}
+
+h1 {
+    font-size: 3em;
+    font-weight: bold;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em;
+}
+
+h2 {
+    font-size: 2.2em;
+    font-weight: bold;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em;
+}
+
+h3 {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+h4 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 1.33em;
+    margin-bottom: 1.33em;
+}
+
+
+p {
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 1em;
+}
+
+ul li {
+    font-size: 1.5em !important;
+}
+
+ol li {
+    font-size: 1.5em !important;
+}
+
+textarea {
+    font-size: 1.5em !important;
+}
