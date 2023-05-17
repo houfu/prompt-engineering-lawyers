@@ -1,6 +1,6 @@
 import streamlit as st
 
-from helpers import use_custom_css
+from helpers import use_custom_css, write_footer
 from prompt_widget import exercise_area
 
 st.set_page_config(
@@ -142,3 +142,5 @@ Your comments and feedback are much appreciated.
 
 Visit the GitHub repository for this website, and submit an issue.
 """
+
+write_footer()

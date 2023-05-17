@@ -13,3 +13,13 @@ def check_openai_key():
         
         If you don't set the OpenAI Key, none of the exercises here will work.
         """, icon="🤦‍♀️")
+
+
+def write_footer():
+    st.divider()
+    st.write(
+        """
+Prompt Engineering for Lawyers © 2023 by Ang Hou Fu is licensed under Attribution-ShareAlike 4.0 International  
+[![Repo](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/houfu/prompt-engineering-lawyers) 
+        """
+    )

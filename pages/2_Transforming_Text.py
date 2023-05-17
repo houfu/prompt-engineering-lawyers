@@ -1,6 +1,6 @@
 import streamlit as st
 
-from helpers import use_custom_css, check_openai_key
+from helpers import use_custom_css, check_openai_key, write_footer
 from prompt_widget import exercise_area
 
 st.set_page_config(
@@ -155,3 +155,5 @@ Harnessing LLMs requires a discerning approach, balancing their potential with h
 
 In the next part, we will explore how to exploit the generative capabilities of LLMs. 
 """
+
+write_footer()

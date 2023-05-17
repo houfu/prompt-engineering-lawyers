@@ -1,7 +1,7 @@
 import streamlit as st
 
 
-from helpers import use_custom_css, check_openai_key
+from helpers import use_custom_css, check_openai_key, write_footer
 from  prompt_widget import exercise_area
 
 st.set_page_config(
@@ -113,3 +113,5 @@ Hopefully, this has helped you get comfortable with the controls we will be usin
 
 So get ready for the next section where we'll put our new skills to the test by asking ChatGPT to rewrite the text!
 """
+
+write_footer()
