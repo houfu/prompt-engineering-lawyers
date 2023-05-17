@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["houfu <houfu@lovelawrobots.com>"]
 readme = "README.md"
-packages = [{include = "prompt_engineering_lawyers"}]
+#packages = [{include = "prompt_engineering_lawyers"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
