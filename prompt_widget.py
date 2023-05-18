@@ -1,7 +1,7 @@
 import streamlit as st
 
 
-def exercise_area(title="Exercise", default_text="", long=True):
+def exercise_area(title="Exercise", default_text="", long=True, model="gpt-3.5-turbo"):
     if st.session_state.get("api_success", False) is False:
         return st.warning("""
         This exercise will not be loaded as no OpenAI key was found.
@@ -22,11 +22,15 @@ def exercise_area(title="Exercise", default_text="", long=True):
             height=550 if long else 180
         )
         submitted = st.form_submit_button("Submit")
+        if model == "gpt-4":
+            model_name = "GPT-4"
+        else:
+            model_name = "ChatGPT"
         if submitted:
-            with st.spinner("Now asking ChatGPT."):
+            with st.spinner(f"Now asking {model_name}."):
                 import openai
                 response = openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
+                    model=model,
                     messages=[
                         {"role": "user", "content": prompt}
                     ]
@@ -46,6 +50,6 @@ def exercise_area(title="Exercise", default_text="", long=True):
         exercise_container.write(st.session_state[content_key][0][1])
     else:
         exercise_container.write(
-            "☝️ Input your prompt and click the submit the button to generate the text from ChatGPT.")
+            f"☝️ Input your prompt and click the submit the button to generate the text from {model_name}.")
     exercise_container.divider()
     return exercise_container
