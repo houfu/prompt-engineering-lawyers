@@ -116,6 +116,19 @@ exercise_area("Test exercise area", long=False)
 but the fundamental concepts in prompt engineering are the same and can be applied elsewhere.
 """
 
+st.header("How to use this course? :hammer:")
+
+"""
+This is a [Streamlit App](https://streamlit.io/), which is a fancy Python Web App.
+
+Use the sidebar (the grey area) to navigate between chapters. If you don't see the sidebar, you may have to click
+the arrow at the top left hand corner to expand it.
+
+The course is best read from top to bottom, but you can also read the chapter which you are most interested. The content
+is fairly self contained and do not require each other. 
+
+"""
+
 st.header("Who are you? :smiley_cat:")
 
 """
