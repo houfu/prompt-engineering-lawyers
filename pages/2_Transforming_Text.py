@@ -5,7 +5,6 @@ from prompt_widget import exercise_area
 
 st.set_page_config(
     page_title="Text transformation using prompts — Prompt Engineering for Lawyers",
-    page_icon=":home:",
     layout="wide"
 )
 
@@ -38,7 +37,7 @@ Let's ask ChatGPT to check our draft email, and make it sound professional.
 """
 
 exercise_area("Exercise 2-1",
-              "I am a lawyer writing an email to my client. This is my email: "
+              default_text="I am a lawyer writing an email to my client. This is my email: "
               "Hey I just wanted to tell you that I went to court today and man the wait was so long. "
               "When I finally got to speak to the Judge, he was like are you all ready for trial? "
               "I told him you still had to make a few more discovery application, "
@@ -126,7 +125,7 @@ with it.
 """
 
 exercise_area("Exercise 2-2",
-              "Rewrite this confidentiality clause to be more simple and plain: \n "
+              default_text="Rewrite this confidentiality clause to be more simple and plain: \n "
               "The Tenant hereby declare and warrant that the Tenant shall at any time be obliged to keep confidential "
               "all the information obtained including but not limited to the terms of this Tenancy Agreement, "
               "other agreements, statements, the contents of any discussions or negotiations between the parties prior"

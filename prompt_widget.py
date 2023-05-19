@@ -1,9 +1,15 @@
+from typing import Literal
+
 import streamlit as st
 
+EXERCISE_TYPES = ['simple_prompt', 'chat']
 
-def exercise_area(title="Exercise", default_text="", long=True, model="gpt-3.5-turbo"):
+MODEL = Literal['gpt-3.5-turbo', 'gpt-4']
+
+
+def exercise_area(title="Exercise", exercise_type: EXERCISE_TYPES = 'simple_prompt', **kwargs):
     if st.session_state.get("api_success", False) is False:
-        return st.warning("""
+        return st.error("""
         This exercise will not be loaded as no OpenAI key was found.
         
         Click Home in the Sidebar, enter your API Key and return here.
@@ -12,6 +18,17 @@ def exercise_area(title="Exercise", default_text="", long=True, model="gpt-3.5-t
 
     if content_key not in st.session_state:
         st.session_state[content_key] = []
+
+    if exercise_type == 'chat':
+        pass
+    else:
+        return simple_prompt(content_key, title, **kwargs)
+
+
+def simple_prompt(content_key, title, **kwargs):
+    default_text = kwargs['default_text'] if 'default_text' in kwargs else ''
+    long = kwargs['long'] if 'long' in kwargs else True
+    model: MODEL = kwargs['model'] if 'model' in kwargs else 'gpt-3.5-turbo'
 
     exercise_container = st.container()
     exercise_container.divider()

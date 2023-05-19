@@ -6,7 +6,6 @@ from  prompt_widget import exercise_area
 
 st.set_page_config(
     page_title="Let's Begin! — Prompt Engineering for Lawyers",
-    page_icon=":home:",
     layout="wide"
 )
 
@@ -41,7 +40,7 @@ Let's ask ChatGPT a simple question. In the exercise area below, I have already 
 to try. Click submit and wait for ChatGPT to give a response. 
 """
 
-exercise_area("Exercise 1-1", "What is will?", long=False)
+exercise_area("Exercise 1-1", default_text="What is will?", long=False)
 
 """
 You would probably get an answer like "free will" in a philosophical context.
@@ -60,7 +59,7 @@ _specific_. That way, you get the definition the first time you ask the LLM.
 This time, let's be more specific before firing at ChatGPT.
 """
 
-exercise_area("Exercise 1-2", "What is a will in the legal sense?", long=False)
+exercise_area("Exercise 1-2", default_text="What is a will in the legal sense?", long=False)
 
 """
 Now you're going to get the definition of a will in a legal sense, not the philosophical one.

@@ -5,7 +5,6 @@ from prompt_widget import exercise_area
 
 st.set_page_config(
     page_title="Home — Prompt Engineering for Lawyers",
-    page_icon=":home:",
     layout="wide"
 )
 
