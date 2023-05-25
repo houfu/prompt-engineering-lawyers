@@ -73,7 +73,7 @@ def simple_chat(content_key, **kwargs):
         )
 
     if content_key in st.session_state and len(st.session_state[content_key]) > 0:
-        reset_conversation = st.button("Reset conversation")
+        reset_conversation = st.button("Reset conversation", key=f"{content_key}-reset")
     else:
         st.write('Enter some text to start a chat.')
 
@@ -81,7 +81,7 @@ def simple_chat(content_key, **kwargs):
         st.session_state[content_key] = kwargs['messages'] if 'messages' in kwargs else []
         st.session_state[clear_form_key] = True
 
-    exercise_container.divider()
+    st.divider()
 
     return exercise_container
 
@@ -95,9 +95,6 @@ def exercise_area(title="Exercise", exercise_type: EXERCISE_TYPES = 'simple_prom
         """, icon="🤦‍♀️")
     content_key = f"exercise-area-{title}-content"
 
-    if content_key not in st.session_state:
-        st.session_state[content_key] = []
-
     if exercise_type == 'chat':
         return simple_chat(content_key, **kwargs)
     else:
@@ -108,6 +105,9 @@ def simple_prompt(content_key, title, **kwargs):
     default_text = kwargs['default_text'] if 'default_text' in kwargs else ''
     long = kwargs['long'] if 'long' in kwargs else True
     model: MODEL = kwargs['model'] if 'model' in kwargs else 'gpt-3.5-turbo'
+
+    if content_key not in st.session_state:
+        st.session_state[content_key] = []
 
     exercise_container = st.container()
     exercise_container.divider()
