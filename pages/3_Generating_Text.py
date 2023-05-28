@@ -43,14 +43,14 @@ Let's see how ChatGPT will defend you.
 exercise_area(
     "Exercise 3-1",
     default_text="Title: John vs. Doe \n"
-    "Facts: John leased an apartment from Doe. Under the lease agreement, rent is due in arrears on the 5th day of "
-    "the relevant month. Doe has brought an action to recover the rent and foreclose John's lease. "
-    "John is a food delivery driver and due to a recent accident, has not been able to earn "
-    "enough money to pay the rent in time. If the lease is foreclosed, John's family of four will have no place to "
-    "live. Usually, Doe is understanding and will give John at least a few weeks to pay the rent. However, recently "
-    "there have been many people who are enquiring about renting John's place. Doe's wife has also been giving John "
-    "and his family evil stares recently. \n"
-    "You are John's lawyer. Generate an opening statement."
+                 "Facts: John leased an apartment from Doe. Under the lease agreement, rent is due in arrears on the 5th day of "
+                 "the relevant month. Doe has brought an action to recover the rent and foreclose John's lease. "
+                 "John is a food delivery driver and due to a recent accident, has not been able to earn "
+                 "enough money to pay the rent in time. If the lease is foreclosed, John's family of four will have no place to "
+                 "live. Usually, Doe is understanding and will give John at least a few weeks to pay the rent. However, recently "
+                 "there have been many people who are enquiring about renting John's place. Doe's wife has also been giving John "
+                 "and his family evil stares recently. \n"
+                 "You are John's lawyer. Generate an opening statement."
 )
 
 """
@@ -76,7 +76,7 @@ That's not how lawyers find or apply the law. At least theoretically.
 """
 
 with st.expander("If I cannot get the LLM to do what I want through prompt engineering, "
-                 "does this mean that making ChatGPT generate opening statements is a pipe dream?"):
+                 "does this mean that ChatGPT does not have the ability to generate opening statements?"):
     """
 It may be difficult to get a LLM to generate the output you want through prompt engineering alone, 
 but you have other options, such as training and fine tuning.
@@ -176,6 +176,32 @@ on the most important parts of a sentence.
 These improvements make GPT-4 a more powerful and versatile language model than ChatGPT. It can generate more realistic 
 and informative text, and it can be used for a wider range of tasks, such as translation, writing, and coding.
     """
+
+st.header("Doing Legal Research with ChatGPT?")
+
+"""
+If you knew _anything_ about Prompt Engineering, you are probably aware that ChatGPT, as well as other large language
+models, are known to "hallucinate". 
+
+By "hallucinating", these models produce output which is not based on reality or factually incorrect. However, due
+to the way users ask for such information, and the way it is presented, there's a strong likelihood that an 
+unsuspecting user would take such output to be the truth.
+
+In the legal domain, a lawyer representing a man who sued an airline relied on ChatGPT to help prepare a court filing. 
+[It did not go well](https://www.nytimes.com/2023/05/27/nyregion/avianca-airline-lawsuit-chatgpt.html?unlocked_article_code=3g7DDz3SJ6_uKgb94Z3rvuxJ-9bWZFtpey_e9W9uRBoCcufQ0tzZlXveRrJlbvNzny4z3GK_vJbsAT-DM425i9q1D72a77NoV7OnKL8vUoXz6xvhJkvVt-FN715J0HzSAae4uUZfDoj11UXvXS7WgCer5tqd6_TzfMeG2kBM6zzzSWkHGwEUTuI5QNDSmGV4HFnq2195sBj6AiKRIAQTfHdHLWuuXJP6cwOSSoNT9LVMEbNQn9KvhENnE6neJYtkMlYs9Xy_-5Ytj6D4dMHy5O2LL0O04_S5_Z6TPaMGgvyj2W-o2uQiYpYjIN51-xfhDyX6tMYB8jIOrKLtO3u6TD4t1bL3-jCRAjg&smid=url-share).
+
+If you followed the text in the previous sections, you would know why using large language models to perform legal
+research is a bad idea. The large language models generate text based on probabilities observed in its training data.
+This is not how lawyers do legal research.
+
+It's possible to ameliorate the effects of hallucination through prompt engineering. For what it's worth, you can tell
+ChatGPT to say "No" if it could not find an answer.
+
+There are other prompt engineering techniques which we will cover in upcoming sections which will help reduce the risk
+of hallucination. It's still important to recognise that large language models should not be used to generate critical 
+content, especially when such content relies heavily on facts and logic. You, or an expert, should check the content
+ that is generated. After all, large language models are not lawyers.
+"""
 
 st.header("Conclusion")
 
