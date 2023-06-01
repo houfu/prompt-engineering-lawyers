@@ -8,11 +8,30 @@ def use_custom_css():
 
 def check_openai_key():
     if st.session_state.get("api_success", False) is False:
-        return st.warning("""
-        No OpenAI key was found! Click Home in the Sidebar, enter your API Key and return here.
-        
-        If you don't set the OpenAI Key, none of the exercises here will work.
+        st.warning("""
+        No OpenAI key was found! If you don't set the OpenAI Key, none of the exercises here will work.
         """, icon="🤦‍♀️")
+        with st.form("openai_key_form"):
+            st.subheader("Enter your OpenAI API Key")
+            st.text_input("OpenAI API Key", placeholder="sk-...", key="openai_key")
+
+            submitted = st.form_submit_button("Submit")
+
+            if submitted:
+                from openai.error import AuthenticationError
+                try:
+                    import openai
+                    openai.api_key = st.session_state.openai_key
+                    openai.Model.list()
+                except AuthenticationError:
+                    st.session_state["api_success"] = False
+                    st.error(
+                        "An incorrect API Key was provided. You can find your API key at "
+                        "https://platform.openai.com/account/api-keys."
+                    )
+                    return
+                st.session_state["api_success"] = True
+                st.success("Success! You are good to go.", icon="🎉")
 
 
 def write_footer():
