@@ -47,6 +47,16 @@ def simple_chat(content_key, **kwargs):
         st.session_state[f"{content_key}-chat-input"] = ""
         st.session_state[clear_form_key] = False
 
+    for index, content_message in enumerate(st.session_state[content_key]):
+        message_role = content_message["role"]
+        message(
+            content_message["content"],
+            is_user=message_role == "user",
+            avatar_style=get_avatar(message_role),
+            seed=38,
+            key=f"{content_key}-{index}"
+        )
+
     user_input = get_text()
 
     if user_input:
@@ -66,16 +76,7 @@ def simple_chat(content_key, **kwargs):
             })
 
             st.session_state[clear_form_key] = True
-
-    for index, content_message in enumerate(st.session_state[content_key]):
-        message_role = content_message["role"]
-        message(
-            content_message["content"],
-            is_user=message_role == "user",
-            avatar_style=get_avatar(message_role),
-            seed=38,
-            key=f"{content_key}-{index}"
-        )
+            st.experimental_rerun()
 
     if content_key in st.session_state and len(st.session_state[content_key]) > 0:
         reset_conversation = st.button("Reset conversation", key=f"{content_key}-reset")
