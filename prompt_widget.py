@@ -1,5 +1,6 @@
 from typing import Literal
 
+import openai
 import streamlit as st
 from streamlit_chat import message
 
@@ -17,6 +18,16 @@ def simple_chat(content_key, **kwargs):
     if clear_form_key not in st.session_state:
         st.session_state[clear_form_key] = False
 
+    if model == "gpt-4":
+        model_name = "GPT-4"
+        try:
+            openai.Model.retrieve(model)
+        except openai.InvalidRequestError:
+            st.error(f"Your API Key doesn't have access to {model_name}, which is required for this exercise. "
+                     "The exercise will not load.", icon="😢")
+    else:
+        model_name = "ChatGPT"
+
     exercise_container = st.container()
     exercise_container.divider()
 
@@ -24,7 +35,7 @@ def simple_chat(content_key, **kwargs):
         input_text = st.text_input("You: ", key=f"{content_key}-chat-input")
         return input_text
 
-    def get_avatar(role):
+    def get_avatar(role) -> Literal["pixel-art-neutral", "bottts", "bottts-neutral"]:
         if role == "user":
             return "pixel-art-neutral"
         elif role == "assistant":
@@ -44,13 +55,7 @@ def simple_chat(content_key, **kwargs):
             "content": user_input
         })
 
-        if model == "gpt-4":
-            model_name = "GPT-4"
-        else:
-            model_name = "ChatGPT"
-
         with st.spinner(f"Now asking {model_name}."):
-            import openai
             response = openai.ChatCompletion.create(
                 model=model,
                 messages=st.session_state[content_key]
@@ -121,11 +126,15 @@ def simple_prompt(content_key, title, **kwargs):
         submitted = st.form_submit_button("Submit")
         if model == "gpt-4":
             model_name = "GPT-4"
+            try:
+                openai.Model.retrieve(model)
+            except openai.InvalidRequestError:
+                st.error(f"Your API Key doesn't have access to {model_name}, which is required for this exercise. "
+                         "The exercise will not load.", icon="😢")
         else:
             model_name = "ChatGPT"
         if submitted:
             with st.spinner(f"Now asking {model_name}."):
-                import openai
                 response = openai.ChatCompletion.create(
                     model=model,
                     messages=[
