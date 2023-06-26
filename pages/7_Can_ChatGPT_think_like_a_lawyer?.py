@@ -4,7 +4,7 @@ from helpers import use_custom_css, check_openai_key, write_footer
 from prompt_widget import exercise_area
 
 st.set_page_config(
-    page_title="Follow the Chain — Prompt Engineering for Lawyers",
+    page_title="Can ChatGPT think like a lawyer? — Prompt Engineering for Lawyers",
     layout="wide"
 )
 
