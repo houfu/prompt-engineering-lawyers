@@ -249,7 +249,6 @@ note-taking, generating narrative summaries, and implementing effective instruct
 yet versatile way to access the full potential of language models and generative AI, making 
 them valuable tools for lawyers seeking improved productivity and outcomes.
 
-In the next section, we build on the lessons we learned here to work on something that will open up even more 
-opportunities for LLMs: Chains and Agents. 
+In the next section, we build on the lessons we learned here to improve the output of the model and our prompts. 
 """
 write_footer()
