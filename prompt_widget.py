@@ -2,7 +2,6 @@ from typing import Literal
 
 import openai
 import streamlit as st
-from streamlit_chat import message
 
 EXERCISE_TYPES = ['simple_prompt', 'chat']
 
@@ -13,10 +12,6 @@ def simple_chat(content_key, **kwargs):
     if content_key not in st.session_state:
         st.session_state[content_key] = kwargs['messages'] if 'messages' in kwargs else []
     model: MODEL = kwargs['model'] if 'model' in kwargs else 'gpt-3.5-turbo'
-    reset_conversation = False
-    clear_form_key = f"{content_key}-clear"
-    if clear_form_key not in st.session_state:
-        st.session_state[clear_form_key] = False
 
     if model == "gpt-4":
         model_name = "GPT-4"
@@ -30,61 +25,6 @@ def simple_chat(content_key, **kwargs):
 
     exercise_container = st.container()
     exercise_container.divider()
-
-    def get_text():
-        input_text = st.text_input("You: ", key=f"{content_key}-chat-input")
-        return input_text
-
-    def get_avatar(role) -> Literal["pixel-art-neutral", "bottts", "bottts-neutral"]:
-        if role == "user":
-            return "pixel-art-neutral"
-        elif role == "assistant":
-            return "bottts"
-        else:
-            return "bottts-neutral"
-
-    if st.session_state[clear_form_key]:
-        st.session_state[f"{content_key}-chat-input"] = ""
-        st.session_state[clear_form_key] = False
-
-    user_input = get_text()
-
-    if user_input:
-        st.session_state[content_key].append({
-            "role": "user",
-            "content": user_input
-        })
-
-        with st.spinner(f"Now asking {model_name}."):
-            response = openai.ChatCompletion.create(
-                model=model,
-                messages=st.session_state[content_key]
-            )
-            st.session_state[content_key].append({
-                "role": "assistant",
-                "content": response['choices'][0]['message']['content']
-            })
-
-            st.session_state[clear_form_key] = True
-
-    for index, content_message in enumerate(st.session_state[content_key]):
-        message_role = content_message["role"]
-        message(
-            content_message["content"],
-            is_user=message_role == "user",
-            avatar_style=get_avatar(message_role),
-            seed=38,
-            key=f"{content_key}-{index}"
-        )
-
-    if content_key in st.session_state and len(st.session_state[content_key]) > 0:
-        reset_conversation = st.button("Reset conversation", key=f"{content_key}-reset")
-    else:
-        st.write('Enter some text to start a chat.')
-
-    if reset_conversation:
-        st.session_state[content_key] = kwargs['messages'] if 'messages' in kwargs else []
-        st.session_state[clear_form_key] = True
 
     st.divider()
 
