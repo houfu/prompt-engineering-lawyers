@@ -20,11 +20,38 @@ def simple_chat(content_key, **kwargs):
         except openai.InvalidRequestError:
             st.error(f"Your API Key doesn't have access to {model_name}, which is required for this exercise. "
                      "The exercise will not load.", icon="😢")
-    else:
-        model_name = "ChatGPT"
 
     exercise_container = st.container()
     exercise_container.divider()
+
+    for message in st.session_state[content_key]:
+        with exercise_container.chat_message(message["role"]):
+            st.markdown(message["content"])
+
+    if prompt := exercise_container.chat_input(key=content_key):
+        with exercise_container.chat_message('user'):
+            st.markdown(prompt)
+        st.session_state[content_key].append({
+            "role": "user",
+            "content": prompt
+        })
+
+        with exercise_container.chat_message("assistant"):
+            message_placeholder = exercise_container.empty()
+            full_response = ""
+
+            for response in openai.ChatCompletion.create(
+                    model=model,
+                    messages=[{"role": m["role"], "content": m["content"]} for m in st.session_state.messages],
+                    stream=True,
+            ):
+                full_response += response.choices[0].delta.get("content", "")
+                message_placeholder.markdown(full_response + "▌")
+            message_placeholder.markdown(full_response)
+            st.session_state[content_key].append({
+                "role": "assistant",
+                "content": full_response
+            })
 
     st.divider()
 
