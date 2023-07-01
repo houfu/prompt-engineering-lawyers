@@ -1,7 +1,7 @@
 import streamlit as st
 
 from helpers import use_custom_css, check_openai_key, write_footer
-from prompt_widget import exercise_area
+from prompt_widget import exercise_area, OpenAIModel
 
 st.set_page_config(
     page_title="Generating text using prompts — Prompt Engineering for Lawyers",
@@ -140,7 +140,7 @@ exercise_area(
     "there have been many people who are enquiring about renting John's place. Doe's wife has also been giving John "
     "and his family evil stares recently. \n"
     "You are John's lawyer. Come up with a strategy to get Doe to restructure John's overdue payments.",
-    model="gpt-4"
+    model=OpenAIModel.GPT4
 )
 
 with st.expander("The exercise area can't load because I don't have access to GPT-4"):

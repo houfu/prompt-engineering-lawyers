@@ -1,7 +1,7 @@
 import streamlit as st
 
 from helpers import use_custom_css, check_openai_key, write_footer
-from prompt_widget import exercise_area
+from prompt_widget import exercise_area, ExerciseType
 
 st.set_page_config(
     page_title="Exploring Memory using Chat — Prompt Engineering for Lawyers",
@@ -73,7 +73,7 @@ Does ChatGPT remember in this case?
 Now let's see what happens in a chat.
 """
 
-exercise_area("Exercise 4-1b", exercise_type="chat",
+exercise_area("Exercise 4-1b", exercise_type=ExerciseType.CHAT,
               messages=[
                   {"role": "user", "content": "My name is Bob."},
                   {"role": "assistant",
@@ -140,7 +140,7 @@ Now let's see what ChatGPT can do with our notes.
 Prompt ChatGPT by typing `Now generate a narrative summary of the mediation.`
 """
 
-exercise_area("Exercise 4-2", exercise_type="chat",
+exercise_area("Exercise 4-2", exercise_type=ExerciseType.CHAT,
               messages=[
                   {"role": "user", "content": ("I am a lawyer and I am taking down notes by telling "
                                                "you what is going on during my mediation. "
@@ -220,7 +220,7 @@ chat already. Now try to take notes of a mediation session (if you need ideas, y
 previous exercise). Do you get the same experience?    
 """
 
-exercise_area("Exercise 4-3", exercise_type="chat",
+exercise_area("Exercise 4-3", exercise_type=ExerciseType.CHAT,
               messages=[
                   {"role": "system", "content": "You are listening to a mediation session. Respond 'OK' to any notes "
                                                 "provided by the user. When the mediation session has ended, produce a "
