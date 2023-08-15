@@ -124,7 +124,7 @@ def simple_prompt(content_key, title, **kwargs):
         if submitted:
             with st.spinner(f"Now asking {model.name}."):
                 response = openai.ChatCompletion.create(
-                    model=model,
+                    model=model.value,
                     messages=[
                         {"role": "user", "content": prompt}
                     ]
