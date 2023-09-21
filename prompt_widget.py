@@ -155,7 +155,7 @@ def exercise_area(title="Exercise", exercise_type: ExerciseType = ExerciseType.S
         return st.error("""
         This exercise will not be loaded as no OpenAI key was found.
 
-        Click Home in the Sidebar, enter your API Key and return here.
+        Enter your API Key in the box at the top of this page and return here.
         """, icon="🤦‍♀️")
     content_key = f"exercise-area-{title}-content"
 
