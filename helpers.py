@@ -1,3 +1,6 @@
+from datetime import datetime
+from typing import TypedDict, Union
+
 import streamlit as st
 
 
@@ -18,7 +21,7 @@ def check_openai_key():
             submitted = st.form_submit_button("Submit")
 
             if submitted:
-                from openai.error import AuthenticationError
+                from openai import AuthenticationError
                 try:
                     import openai
                     openai.api_key = st.session_state.openai_key
@@ -42,3 +45,42 @@ Prompt Engineering for Lawyers © 2023 by Ang Hou Fu is licensed under Attributi
 [![Repo](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/houfu/prompt-engineering-lawyers) 
         """
     )
+
+
+def is_supabase_session_params(obj: dict) -> bool:
+    required_keys = {
+        "access_token": str,
+        "refresh_token": str,
+    }
+
+    # Check for the presence of all required keys and their types
+    for key, expected_type in required_keys.items():
+        if key not in obj or not isinstance(obj[key], expected_type):
+            return False
+
+    return True
+
+
+# Initialize connection.
+# Uses st.cache_resource to only run once.
+@st.cache_resource(ttl="1 day", max_entries=100)
+def get_supabase_client(access_token: str = None, refresh_token: str = None):
+    from supabase import create_client
+
+    client = create_client(st.secrets["SUPABASE_URL"], st.secrets["SUPABASE_KEY"])
+
+    if access_token and refresh_token:
+        client.auth.set_session(access_token, refresh_token)
+
+    return client
+
+
+def supabase_client():
+    if 'supabase_session' not in st.session_state:
+        return get_supabase_client()
+    else:
+        session_params = st.session_state['supabase_session']
+        if not session_params:
+            return get_supabase_client()
+        else:
+            return get_supabase_client(session_params.get('access_token'), session_params.get('refresh_token'))

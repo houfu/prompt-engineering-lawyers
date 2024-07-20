@@ -4,15 +4,24 @@ version = "0.1.0"
 description = ""
 authors = ["houfu <houfu@lovelawrobots.com>"]
 readme = "README.md"
+package-mode = false
 #packages = [{include = "prompt_engineering_lawyers"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
-streamlit = "^1.22.0"
-openai = "^0.27.6"
-tiktoken = "^0.4.0"
-streamlit-chat = "^0.1.1"
+streamlit = "^1.36.0"
+openai = "^1.35.14"
+httpx = "^0.27.0"
+pydantic = "^2.8.2"
+supabase = "^2.5.3"
+sqlmodel = "^0.0.20"
+pydantic-settings = "^2.3.4"
+streamlit-url-fragments = "^0.1.0"
 
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+alembic = "^1.13.2"
 
 [build-system]
 requires = ["poetry-core"]
