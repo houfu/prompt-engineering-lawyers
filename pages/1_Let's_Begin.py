@@ -1,8 +1,7 @@
 import streamlit as st
 
 
-from helpers import use_custom_css, check_openai_key, write_footer
-from  prompt_widget import exercise_area
+from helpers import use_custom_css, check_openai_key, write_footer, supabase_client
 
 st.set_page_config(
     page_title="Let's Begin! — Prompt Engineering for Lawyers",

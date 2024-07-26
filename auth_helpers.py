@@ -39,6 +39,6 @@ def welcome_mat():
             if submitted:
                 # Check whether user is already has access; if yes, proceed to send magiclink.
                 # If not, encourage user to buy.
-                pass
+                supabase_client().table()
     st.write("---")
 
