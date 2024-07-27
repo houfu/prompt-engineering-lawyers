@@ -4,19 +4,20 @@ from streamlit_url_fragments import get_fragments
 from auth_helpers import welcome_mat
 from helpers import use_custom_css, write_footer, is_supabase_session_params
 
-st.set_page_config(
-    page_title="Home — Prompt Engineering for Lawyers",
-    layout="wide"
-)
+st.set_page_config(page_title="Home — Prompt Engineering for Lawyers", layout="wide")
 
 
-if 'supabase_session' not in st.session_state:
+if "supabase_session" not in st.session_state:
     session_params = get_fragments()
-    st.session_state['supabase_session'] = session_params if is_supabase_session_params(session_params) else None
+    st.session_state["supabase_session"] = (
+        session_params
+        if session_params and is_supabase_session_params(session_params)
+        else None
+    )
 
 
-if 'api_success' not in st.session_state:
-    st.session_state['api_success'] = False
+if "api_success" not in st.session_state:
+    st.session_state["api_success"] = False
 
 use_custom_css()
 

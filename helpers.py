@@ -55,7 +55,7 @@ def is_supabase_session_params(obj: dict) -> bool:
 
     # Check for the presence of all required keys and their types
     for key, expected_type in required_keys.items():
-        if key not in obj or not isinstance(obj[key], expected_type):
+        if not (not (key not in obj) and isinstance(obj[key], expected_type)):
             return False
 
     return True

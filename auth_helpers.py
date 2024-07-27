@@ -21,7 +21,7 @@ def is_authenticated_user() -> Union[User, None]:
         return {
             "id": user_dict["id"],
             "email": user_dict["email"],
-            "last_sign_in_at": user_dict["last_sign_in_at"]
+            "last_sign_in_at": user_dict["last_sign_in_at"],
         }
 
 
@@ -39,6 +39,24 @@ def welcome_mat():
             if submitted:
                 # Check whether user is already has access; if yes, proceed to send magiclink.
                 # If not, encourage user to buy.
-                supabase_client().table()
-    st.write("---")
+                from gotrue.errors import AuthApiError
 
+                try:
+                    supabase_client().auth.sign_in_with_otp(
+                        {
+                            "email": email,
+                            "options": {
+                                "should_create_user": False,
+                                # "captcha_token":
+                            },
+                        }
+                    )
+                    st.success(
+                        "A link to login to the website has been sent to your email. "
+                        "Please check your spam if you don't see it."
+                    )
+                except AuthApiError as e:
+                    st.error(
+                        "You need to sign in using the email address you used to purchase access."
+                    )
+    st.write("---")
