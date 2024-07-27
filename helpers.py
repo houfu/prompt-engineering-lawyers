@@ -1,6 +1,3 @@
-from datetime import datetime
-from typing import TypedDict, Union
-
 import streamlit as st
 
 
@@ -45,20 +42,6 @@ Prompt Engineering for Lawyers © 2023 by Ang Hou Fu is licensed under Attributi
 [![Repo](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/houfu/prompt-engineering-lawyers) 
         """
     )
-
-
-def is_supabase_session_params(obj: dict) -> bool:
-    required_keys = {
-        "access_token": str,
-        "refresh_token": str,
-    }
-
-    # Check for the presence of all required keys and their types
-    for key, expected_type in required_keys.items():
-        if not (not (key not in obj) and isinstance(obj[key], expected_type)):
-            return False
-
-    return True
 
 
 # Initialize connection.

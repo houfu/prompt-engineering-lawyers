@@ -26,13 +26,14 @@ def is_authenticated_user() -> Union[User, None]:
 
 
 def welcome_mat():
-    st.write("---")
     if user := is_authenticated_user():
+        st.write("---")
         st.write(f"### Welcome back, {user['email']}!")
         st.write(f"Last signed in at: {user['last_sign_in_at']}")
+        st.write("---")
     else:
-        st.write("### To experience the full content of this site, you should sign in.")
         with st.form(key="sign_in_form"):
+            st.write(":material/login:**Sign in to experience the full features of this site.**")
             email = st.text_input("Email")
             submitted = st.form_submit_button("Sign In")
 
@@ -55,8 +56,26 @@ def welcome_mat():
                         "A link to login to the website has been sent to your email. "
                         "Please check your spam if you don't see it."
                     )
-                except AuthApiError as e:
+                except AuthApiError:
                     st.error(
                         "You need to sign in using the email address you used to purchase access."
                     )
-    st.write("---")
+
+            st.caption("""
+            To be able to sign in, you need to purchase access to the course through this link.
+            Some of the content is available for free, so you can check that out before making a purchase.
+            """)
+
+
+def is_supabase_session_params(obj: dict) -> bool:
+    required_keys = {
+        "access_token": str,
+        "refresh_token": str,
+    }
+
+    # Check for the presence of all required keys and their types
+    for key, expected_type in required_keys.items():
+        if not (not (key not in obj) and isinstance(obj[key], expected_type)):
+            return False
+
+    return True

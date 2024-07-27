@@ -1,19 +1,18 @@
 import streamlit as st
 from streamlit_url_fragments import get_fragments
 
-from auth_helpers import welcome_mat
-from helpers import use_custom_css, write_footer, is_supabase_session_params
+from auth_helpers import welcome_mat, is_supabase_session_params
+from helpers import use_custom_css, write_footer, supabase_client
 
-st.set_page_config(page_title="Home — Prompt Engineering for Lawyers", layout="wide")
+st.set_page_config(page_title="Home — Prompt Engineering for Lawyers")
 
 
 if "supabase_session" not in st.session_state:
     session_params = get_fragments()
-    st.session_state["supabase_session"] = (
-        session_params
-        if session_params and is_supabase_session_params(session_params)
-        else None
-    )
+    if session_params and is_supabase_session_params(session_params):
+        st.session_state["supabase_session"] = session_params
+        # Run the function to initialize the connection.
+        supabase_client()
 
 
 if "api_success" not in st.session_state:
@@ -21,11 +20,17 @@ if "api_success" not in st.session_state:
 
 use_custom_css()
 
+st.image("content/reading_bar.png", use_column_width=True)
+
 st.title("Prompt Engineering for Lawyers")
+
+"""
+*Explore the possibilities of prompt engineering and large language models in the legal domain.*
+"""
 
 welcome_mat()
 
-st.header("What's this? :open_mouth:")
+st.header("What's this? :open_mouth:", divider=True)
 
 """
 It's a course to explore what prompt engineering is and its possibilities. 
@@ -38,13 +43,12 @@ At the end of the course, you will:
 Bard, PaLM and many others through prompt engineering.
 
 This course is also focused on **application**. 
-It is designed for lawyers and other professionals who want to use prompt engineering in a variety of tasks in the 
-legal domain. 
+It is designed for lawyers and other professionals who want to use prompt engineering in the legal domain. 
 The examples and the tasks are focused on the legal domain.
 
 """
 
-st.header("Why should I take this course? :thinking_face:")
+st.header("Why should I take this course? :thinking_face:", divider=True)
 
 """
 If you are a lawyer, and you want to stay ahead of the curve in the ever-evolving world of legal technology,
@@ -55,10 +59,26 @@ legal work, this is a good way to gain exposure.
 
 One of the most important features I wanted is the ability to *experiment*. The widgets in this course
 allow a user to input any prompt, so you can follow the course, experiment with your own input or 
-compare two prompts to compare how effective they are.
+compare prompts.
 
 Let's have fun! :the_horns:
 """
 
+st.header("What's the deal with *full access*? :moneybag:", divider=True)
+
+"""
+This is not that kind of course where you open it and just read. A lot of effort goes into researching, 
+designing and implementing the exercises. This includes coding work to make the exercises interactive.
+
+While the first iteration of this course was free, I have decided to make it a paid course. Some of the 
+more advanced exercises (marked ":red[:material/lock:]") will require a subscription. Before making 
+payment, you can try out the free exercises (marked ":violet[:material/lock_open:]") to see if this course is for you.
+Once you get full access, you will be able to access all the exercises (marked ":green[:material/lock:]" and
+":green[:material/lock_open:]").
+
+Once you get full access, you also get access to updates and new exercises that I will be adding in the future.
+
+Ready to get started? :rocket:
+"""
 
 write_footer()
