@@ -43,6 +43,9 @@ class Page(SQLModel, table=True):
     )
     section: Section = Relationship(back_populates="pages")
     page_order: int = 0
+    active: bool = Field(default=True, description="Whether the page is active")
+    beta: bool = Field(default=False, description="Whether the page is in beta")
+    path: str = Field(default="pages/test.py", description="Path to the page")
 
 
 class UserEvent(SQLModel, table=True):
