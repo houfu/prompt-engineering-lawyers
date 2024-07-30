@@ -46,6 +46,9 @@ class Page(SQLModel, table=True):
     active: bool = Field(default=True, description="Whether the page is active")
     beta: bool = Field(default=False, description="Whether the page is in beta")
     path: str = Field(default="pages/test.py", description="Path to the page")
+    section_id: int = Field(
+        default=0, foreign_key="section.id", description="Section ID"
+    )
 
 
 class UserEvent(SQLModel, table=True):
