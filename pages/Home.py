@@ -1,24 +1,8 @@
 import streamlit as st
-from streamlit_url_fragments import get_fragments
 
-from auth_helpers import welcome_mat, is_supabase_session_params
-from helpers import use_custom_css, write_footer, supabase_client
+from auth_helpers import welcome_mat
 
 st.set_page_config(page_title="Home — Prompt Engineering for Lawyers")
-
-
-if "supabase_session" not in st.session_state:
-    session_params = get_fragments()
-    if session_params and is_supabase_session_params(session_params):
-        st.session_state["supabase_session"] = session_params
-        # Run the function to initialize the connection.
-        supabase_client()
-
-
-if "api_success" not in st.session_state:
-    st.session_state["api_success"] = False
-
-use_custom_css()
 
 st.image("content/reading_bar.png", use_column_width=True)
 
@@ -35,7 +19,7 @@ st.header("What's this? :open_mouth:", divider=True)
 """
 It's a course to explore what prompt engineering is and its possibilities. 
 At the end of the course, you will:
- 
+
 * Craft prompts that are clear, concise and effective in generating the response you want
 * Discover new ways to make large language models work harder for you
 * Evaluate the quality of the generated text
@@ -80,5 +64,3 @@ Once you get full access, you also get access to updates and new exercises that 
 
 Ready to get started? :rocket:
 """
-
-write_footer()

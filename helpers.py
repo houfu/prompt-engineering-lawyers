@@ -3,14 +3,17 @@ import streamlit as st
 
 def use_custom_css():
     with open("custom.css") as custom_css:
-        return st.write(f'<style>{custom_css.read()}</style>', unsafe_allow_html=True)
+        return st.write(f"<style>{custom_css.read()}</style>", unsafe_allow_html=True)
 
 
 def check_openai_key():
     if st.session_state.get("api_success", False) is False:
-        st.warning("""
+        st.warning(
+            """
         No OpenAI key was found! If you don't set the OpenAI Key, none of the exercises here will work.
-        """, icon="🤦‍♀️")
+        """,
+            icon="🤦‍♀️",
+        )
         with st.form("openai_key_form"):
             st.subheader("Enter your OpenAI API Key")
             st.text_input("OpenAI API Key", placeholder="sk-...", key="openai_key")
@@ -19,8 +22,10 @@ def check_openai_key():
 
             if submitted:
                 from openai import AuthenticationError
+
                 try:
                     import openai
+
                     openai.api_key = st.session_state.openai_key
                     openai.Model.list()
                 except AuthenticationError:
@@ -59,11 +64,13 @@ def get_supabase_client(access_token: str = None, refresh_token: str = None):
 
 
 def supabase_client():
-    if 'supabase_session' not in st.session_state:
+    if "supabase_session" not in st.session_state:
         return get_supabase_client()
     else:
-        session_params = st.session_state['supabase_session']
+        session_params = st.session_state["supabase_session"]
         if not session_params:
             return get_supabase_client()
         else:
-            return get_supabase_client(session_params.get('access_token'), session_params.get('refresh_token'))
+            return get_supabase_client(
+                session_params.get("access_token"), session_params.get("refresh_token")
+            )

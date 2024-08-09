@@ -7,7 +7,7 @@ from sqlmodel import SQLModel, Field, Relationship
 
 class User(SQLModel, table=True):
     __tablename__ = "users"
-    __table_args__ = {"schema": "auth"}
+    __table_args__ = {"schema": "auth", "extend_existing": True}
 
     id: UUID = Field(default=None, primary_key=True)
     username: str = Field()
@@ -15,6 +15,9 @@ class User(SQLModel, table=True):
 
 
 class Profile(SQLModel, table=True):
+    __tablename__ = "profile"
+    __table_args__ = {"extend_existing": True}
+
     id: UUID = Field(
         default=None,
         primary_key=True,
@@ -29,19 +32,25 @@ class Profile(SQLModel, table=True):
 
 
 class Section(SQLModel, table=True):
+    __tablename__ = "section"
+    __table_args__ = {"extend_existing": True}
+
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str = Field(default="New Section", description="Title of the Section")
     section_order: int = 0
-    pages: list["Page"] = Relationship(back_populates="section")
+    pages: list["Page"]
 
 
 class Page(SQLModel, table=True):
+    __tablename__ = "page"
+    __table_args__ = {"extend_existing": True}
+
     id: Optional[int] = Field(default=None, primary_key=True)
     title: str = Field(default="New Page", description="Title of the page")
     locked: bool = Field(
         default=False, description="Whether being a user is needed to view the page"
     )
-    section: Section = Relationship(back_populates="pages")
+    section: "Section"
     page_order: int = 0
     active: bool = Field(default=True, description="Whether the page is active")
     beta: bool = Field(default=False, description="Whether the page is in beta")
@@ -52,6 +61,9 @@ class Page(SQLModel, table=True):
 
 
 class UserEvent(SQLModel, table=True):
+    __tablename__ = "userevent"
+    __table_args__ = {"extend_existing": True}
+
     id: Optional[int] = Field(default=None, primary_key=True)
     user: UUID = Field(default=None, foreign_key="profile.id")
     event: str = Field(description="What is happening. Should be eg. 'Complete page'")
@@ -61,3 +73,7 @@ class UserEvent(SQLModel, table=True):
         foreign_key="page.id",
     )
     time: datetime
+
+
+Section.pages = Relationship(back_populates="section")
+Page.section = Relationship(back_populates="pages")
