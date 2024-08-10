@@ -1,4 +1,7 @@
 import streamlit as st
+from supabase import create_client
+
+from settings import settings
 
 
 def use_custom_css():
@@ -18,7 +21,7 @@ def check_openai_key():
             submitted = st.form_submit_button("Submit")
 
             if submitted:
-                from openai.error import AuthenticationError
+                from openai import AuthenticationError
                 try:
                     import openai
                     openai.api_key = st.session_state.openai_key
@@ -42,3 +45,6 @@ Prompt Engineering for Lawyers © 2023 by Ang Hou Fu is licensed under Attributi
 [![Repo](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/houfu/prompt-engineering-lawyers) 
         """
     )
+
+
+supabase_client = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
