@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_url_fragments import get_fragments
 from supabase import create_client
 
 from settings import settings
@@ -48,3 +49,44 @@ Prompt Engineering for Lawyers © 2023 by Ang Hou Fu is licensed under Attributi
 
 
 supabase_client = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
+
+
+def is_supabase_session_params(obj: dict):
+    required_keys = {
+        "access_token": str,
+        "refresh_token": str,
+    }
+
+    # Check for the presence of all required keys and their types
+    for key, expected_type in required_keys.items():
+        if not (not (key not in obj) and isinstance(obj[key], expected_type)):
+            return False
+
+    return True
+
+
+def welcome_mat():
+    """
+    Checks whether the user is logged in and sets the session state accordingly
+    :return:
+    """
+    if "logged_in" not in st.session_state or st.session_state["logged_in"] is False:
+        session_params = get_fragments()
+
+        if session_params:
+            if is_supabase_session_params(session_params):
+                try:
+                    supabase_client.auth.set_session(session_params["access_token"], session_params["refresh_token"])
+                    supabase_client.auth.get_user()
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
+                st.session_state["logged_in"] = True
+        else:
+            st.session_state["logged_in"] = False
+
+
+def log_out():
+    supabase_client.auth.sign_out()
+    st.session_state["logged_in"] = False
+    st.session_state["api_success"] = False
+    st.query_params.clear()
