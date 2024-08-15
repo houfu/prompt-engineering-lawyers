@@ -1,6 +1,7 @@
 import streamlit as st
 
 from helpers import use_custom_css, write_footer, welcome_mat, log_out
+from routes import get_routes, get_navigation
 
 st.set_page_config(layout="wide")
 
@@ -12,16 +13,7 @@ welcome_mat()
 use_custom_css()
 
 
-pg = st.navigation(
-    {
-        "": [
-            st.Page("content/pages/Home.py", title="Home", default=True),
-        ],
-        "Getting Started": [
-            st.Page("content/pages/introduction.py", title="Introduction"),
-        ],
-    }
-)
+pg = st.navigation(get_routes(), position="hidden")
 pg.run()
 
 
@@ -41,5 +33,6 @@ with st.sidebar:
             label="**Subscribe to this site**",
             icon="👉",
         )
+    get_navigation()
 
 write_footer()

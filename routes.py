@@ -1,0 +1,83 @@
+from typing import Optional
+
+import streamlit as st
+from pydantic import BaseModel, Field
+
+
+class Section(BaseModel):
+    id: Optional[int] = Field(default=None)
+    title: str = Field(default="New Section", description="Title of the Section")
+    section_order: int = 0
+    pages: list["Page"]
+
+
+class Page(BaseModel):
+    id: Optional[int] = Field(default=None)
+    title: str = Field(default="New Page", description="Title of the page")
+    locked: bool = Field(
+        default=False, description="Whether being a user is needed to view the page"
+    )
+    page_order: int = 0
+    active: bool = Field(default=True, description="Whether the page is active")
+    beta: bool = Field(default=False, description="Whether the page is in beta")
+    path: str = Field(default="pages/test.py", description="Path to the page")
+
+
+data_pages = [
+    Section(
+        title="Getting Started",
+        section_order=0,
+        pages=[
+            # Introduction
+            Page(
+                title="Introduction",
+                page_order=0,
+                path="content/pages/introduction.py",
+            )
+        ],
+    )
+]
+
+
+def convert_section_for_routes(section: Section):
+    def convert_page(page: Page) -> st.Page:
+        title = f"{'[BETA] ' if page.beta else ''}{page.title}: Prompt Engineering for Lawyers"
+        return st.Page(
+            page.path,
+            title=title,
+        )
+
+    return {
+        section.title: [convert_page(page) for page in section.pages if page.active]
+    }
+
+
+def get_routes():
+    result = {
+        "": [
+            st.Page("content/pages/Home.py", title="Home: Prompt Engineering for Lawyers", default=True, icon="🏠"),
+        ]
+    }
+
+    for section in data_pages:
+        result.update(convert_section_for_routes(section))
+
+    return result
+
+
+def get_navigation():
+    with st.expander("Contents", expanded=True, icon="📚"):
+        st.page_link("content/pages/Home.py", label="Home", icon="🏠")
+        for section in data_pages:
+            st.caption(section.title)
+            for page in section.pages:
+                if page.active:
+                    if st.session_state["logged_in"]:
+                        locked = ":green[:material/lock:]" if page.locked else ":green[:material/lock_open:]"
+                    else:
+                        locked = f":red[:material/lock:]" if page.locked else ":violet[:material/lock_open:]"
+
+                    label=(f"{locked}"
+                           f"{'🚧' if page.beta else ''}"
+                           f" {page.title}")
+                    st.page_link(page.path, label=label)
