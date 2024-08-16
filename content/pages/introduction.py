@@ -2,6 +2,8 @@ import streamlit as st
 
 from helpers import write_essay_page, navigation_footer
 
+PAGE_PATH = "content/pages/introduction.py"
+
 write_essay_page()
 
 st.title("Introduction to Prompt Engineering for Lawyers")
@@ -63,4 +65,4 @@ st.page_link(
     icon="👉",
 )
 
-navigation_footer(1)
+navigation_footer(PAGE_PATH)

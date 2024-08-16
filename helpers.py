@@ -1,3 +1,5 @@
+from typing import Optional
+
 import streamlit as st
 from streamlit_url_fragments import get_fragments
 from supabase import create_client
@@ -97,9 +99,20 @@ def log_out():
     st.query_params.clear()
 
 
-def navigation_footer(page_index: int):
+def navigation_footer(page_path: str):
+
+    st.divider()
+
     from routes import get_routes_list
     routes = get_routes_list()
+
+    def search_route_index_by_path(path: str) -> (int, Optional[st.Page]):
+        for index, page in enumerate(routes):
+            if page.path == path:
+                return index, page
+        return -1, None
+
+    page_index, page_page = search_route_index_by_path(page_path)
     if page_index > 0:
         if page_index == len(routes) - 1:
             col1, col2 = st.columns(2)
