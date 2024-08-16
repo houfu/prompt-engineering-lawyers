@@ -1,6 +1,7 @@
 import streamlit as st
 
 from helpers import supabase_client
+from routes import get_navigation
 
 st.image("content/reading_bar.png", use_column_width=True)
 
@@ -43,6 +44,9 @@ else:
                 st.error(
                     "You can't sign in unless you have already subscribed to this site."
                 )
+
+    get_navigation()
+
     st.header("Having Trouble?")
     """
     You can still continue to browse the site without logging in, but not all its feature will be available to you.

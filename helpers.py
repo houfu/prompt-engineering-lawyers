@@ -48,6 +48,11 @@ Prompt Engineering for Lawyers © 2023 by Ang Hou Fu is licensed under Attributi
     )
 
 
+def write_essay_page():
+    st.info("This page does not contain any prompt engineering exercises. If you are looking for _exercises_ "
+            "and _applications_, you may want to move to the next page.", icon="📝")
+
+
 supabase_client = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
 
 
@@ -90,3 +95,33 @@ def log_out():
     st.session_state["logged_in"] = False
     st.session_state["api_success"] = False
     st.query_params.clear()
+
+
+def navigation_footer(page_index: int):
+    from routes import get_routes_list
+    routes = get_routes_list()
+    if page_index > 0:
+        if page_index == len(routes) - 1:
+            col1, col2 = st.columns(2)
+            with col1:
+                previous_page = routes[page_index - 1]
+                st.page_link(f"{previous_page.path}", label=f"_{previous_page.title}_", icon="⬅️")
+            with col2:
+                st.page_link("content/pages/Home.py", label="Home", icon="🏠")
+        else:
+            col1, col2, col3 = st.columns(3)
+            with col1:
+                previous_page = routes[page_index - 1]
+                st.page_link(f"{previous_page.path}", label=f"_{previous_page.title}_", icon="⬅️")
+            with col2:
+                st.page_link("content/pages/Home.py", label="Home", icon="🏠")
+            with col3:
+                next_page = routes[page_index + 1]
+                st.page_link(f"{next_page.path}", label=f"_{next_page.title}_", icon="➡️")
+    elif page_index == 0:
+        col1, col2 = st.columns(2)
+        with col1:
+            st.page_link("content/pages/Home.py", label="Home", icon="🏠")
+        with col2:
+            next_page = routes[page_index + 1]
+            st.page_link(f"{next_page.path}", label=f"_{next_page.title}_", icon="➡️")

@@ -25,8 +25,19 @@ class Page(BaseModel):
 
 data_pages = [
     Section(
-        title="Getting Started",
         section_order=0,
+        pages=[
+            # Home
+            Page(
+                title="Home",
+                page_order=0,
+                path="content/pages/Home.py",
+            )
+        ]
+    ),
+    Section(
+        title="Getting Started",
+        section_order=1,
         pages=[
             # Introduction
             Page(
@@ -47,6 +58,8 @@ def convert_section_for_routes(section: Section):
             title=title,
         )
 
+    section.pages.sort(key=lambda x: x.page_order)
+
     return {
         section.title: [convert_page(page) for page in section.pages if page.active]
     }
@@ -59,7 +72,9 @@ def get_routes():
         ]
     }
 
-    for section in data_pages:
+    data_pages.sort(key=lambda x: x.section_order)
+
+    for section in data_pages[1:]:
         result.update(convert_section_for_routes(section))
 
     return result
@@ -68,7 +83,7 @@ def get_routes():
 def get_navigation():
     with st.expander("Contents", expanded=True, icon="📚"):
         st.page_link("content/pages/Home.py", label="Home", icon="🏠")
-        for section in data_pages:
+        for section in data_pages[1:]:
             st.caption(section.title)
             for page in section.pages:
                 if page.active:
@@ -81,3 +96,7 @@ def get_navigation():
                            f"{'🚧' if page.beta else ''}"
                            f" {page.title}")
                     st.page_link(page.path, label=label)
+
+
+def get_routes_list() -> list[Page]:
+    return [page for section in data_pages for page in section.pages]

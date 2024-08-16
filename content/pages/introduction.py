@@ -1,5 +1,9 @@
 import streamlit as st
 
+from helpers import write_essay_page, navigation_footer
+
+write_essay_page()
+
 st.title("Introduction to Prompt Engineering for Lawyers")
 
 st.header("What's this? :open_mouth:", divider=True)
@@ -52,3 +56,11 @@ Once you get full access, you also get access to updates and new exercises that 
 
 Ready to get started? :rocket:
 """
+
+st.page_link(
+    "https://buymeacoffee.com/houfu/membership",
+    label="**Subscribe to this site**",
+    icon="👉",
+)
+
+navigation_footer(1)
