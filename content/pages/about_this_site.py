@@ -96,7 +96,7 @@ Just a quick heads up that you will incur charges on your OpenAI account when yo
 exercises in this course. However, don't worry too much, as it will take a lot of queries before you have to pay a 
 significant amount of money. 
 As of the time of writing, using GPT-4o mini, which is the main LLM we will use on this site, 
-1,000 input tokens costs \$0.000150 and 1,000 output tokens costs \$0.000600.
+1,000 input tokens costs \\$0.000150 and 1,000 output tokens costs \\$0.000600.
 
 As Theodore Roosevelt once said, "The only way to learn anything is to do it." 
 So, don't be afraid to experiment and try new things. The more you use the examples and exercises, 
