@@ -36,15 +36,34 @@ data_pages = [
         ]
     ),
     Section(
-        title="Getting Started",
+        title="Preliminaries",
         section_order=1,
         pages=[
             # Introduction
             Page(
-                title="Introduction",
+                title="About this Site",
                 page_order=0,
-                path="content/pages/introduction.py",
+                path="content/pages/about_this_site.py",
+            ),
+            # What is Prompt Engineering?
+            Page(
+                title="What is Prompt Engineering?",
+                page_order=1,
+                path="content/pages/what_is_prompt_engineering.py",
+                beta=True,
             )
+        ],
+    ),
+    Section(
+        title="Getting Started",
+        section_order=2,
+        pages=[
+            # Completion
+            Page(
+                title="From Prompt to Completion",
+                page_order=0,
+                path="content/pages/completion.py",
+            ),
         ],
     )
 ]
