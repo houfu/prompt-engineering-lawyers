@@ -51,6 +51,6 @@ else:
     """
     You can still continue to browse the site without logging in, but not all its feature will be available to you.
     """
-    st.page_link("content/pages/introduction.py", label="Why should I subscribe?", icon="💁‍♂️")
+    st.page_link("content/pages/about_this_site.py", label="Why should I subscribe?", icon="💁‍♂️")
 
     st.page_link("https://buymeacoffee.com/houfu/membership", label="**Subscribe to this site**", icon="👉")

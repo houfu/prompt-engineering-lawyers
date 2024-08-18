@@ -5,8 +5,8 @@ from routes import get_routes, get_navigation
 
 st.set_page_config(layout="wide")
 
-if "api_success" not in st.session_state:
-    st.session_state["api_success"] = False
+if "openai_key" not in st.session_state:
+    st.session_state["openai_key"] = None
 
 welcome_mat()
 
