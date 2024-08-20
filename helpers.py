@@ -43,7 +43,7 @@ def write_footer():
     st.divider()
     st.write(
         """
-Prompt Engineering for Lawyers © 2023 by Ang Hou Fu is licensed under Attribution-ShareAlike 4.0 International  
+Prompt Engineering for Lawyers © 2023-2024 by Ang Hou Fu is licensed under Attribution-ShareAlike 4.0 International  
 [![Repo](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/houfu/prompt-engineering-lawyers) 
         """
     )
@@ -52,6 +52,26 @@ Prompt Engineering for Lawyers © 2023 by Ang Hou Fu is licensed under Attributi
 def write_essay_page():
     st.info("This page does not contain any prompt engineering exercises. If you are looking for _exercises_ "
             "and _applications_, you may want to move to the next page.", icon="📝")
+
+
+def write_what_you_will_learn(learnings: list[str]):
+    learnings_md_list = "\n".join(f"* {learning}" for learning in learnings)
+    st.success(f"""
+✍️ What you will learn in this section:
+---------------------------------------
+    
+{learnings_md_list}
+""")
+
+
+def write_more_resources(resources: list[str]):
+    resources_md_list = "\n".join(f"* {resource}" for resource in resources)
+    st.info(f"""
+ 📚 Further reading and resources:
+---------------------------------------
+    
+{resources_md_list}
+""")
 
 
 supabase_client = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)

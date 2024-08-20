@@ -2,7 +2,7 @@ import streamlit as st
 
 # A page template to keep track of all the helper functions and classes that are used in the project.
 # Make a copy of this page to begin a new page
-from helpers import navigation_footer, check_openai_key
+from helpers import navigation_footer, check_openai_key, write_what_you_will_learn, write_more_resources
 from prompt_widget import simple_prompt
 
 # Page path is used to identify the page in the navigation footer. Use the file path to the page.
@@ -15,6 +15,12 @@ check_openai_key()
 
 # Title of the page
 st.title("From Prompt to Completion")
+
+write_what_you_will_learn([
+    "Try out the completion interface which we will be using throughout the course",
+    "Get used to querying the LLM and evaluating the output",
+    "The randomness of LLMs",
+])
 
 st.header("The basic interface of LLMs", divider=True)
 """
@@ -67,6 +73,13 @@ even useful.
 
 Your task as a prompt engineer is to find a balance between randomness and control.
 """
+
+write_more_resources(
+    [
+        "[An explanation on how LLMs work from Stephen Wolfram (with lots of graphs, diagrams and math"
+        "s)](https://writings.stephenwolfram.com/2023/02/what-is-chatgpt-doing-and-why-does-it-work/)",
+    ]
+)
 
 # Navigation footer is a common footer that is used in all pages. It provides links to the previous and next pages.
 navigation_footer(PAGE_PATH)
