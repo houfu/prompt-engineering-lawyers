@@ -64,6 +64,12 @@ data_pages = [
                 page_order=0,
                 path="content/pages/completion.py",
             ),
+            # Everything in its Context
+            Page(
+                title="Everything in its Right Context",
+                page_order=1,
+                path="content/pages/everything_in_context.py",
+            ),
         ],
     )
 ]
