@@ -36,27 +36,28 @@ Hopefully, you will get a chance to familiarise yourself with the basic tools of
 get used to writing prompts, getting feedback from the LLM and evaluating the output. 
 """
 
-st.header("Exercise 1: Let's Throw Something at a LLM", divider=True)
+st.header("Let's Throw Something at a LLM", divider=True)
 """
 Let's ask the LLM a simple question. In the exercise area below, I have already provided the prompt to try. 
-Click submit and wait for the LLM to give a response.
 """
 
-simple_prompt("Exercise 1", default_text="What is will in ten words or less?")
+simple_prompt("Let's Throw Something at a LLM", default_text="What is will in ten words or less?")
 
 """
-Now, ask the LLM again. Did you get the same response? 
 
-Assume you were aiming for the meaning of will as a testamentary disposition. 
+1. Click submit and wait for the LLM to give a response.
+
+2. Now, ask the LLM again. Did you get the same response? 
+
+3. Assume you were aiming for the meaning of will as a testamentary disposition. 
 Did you get that meaning? Even after several tries?
 
-Notice that we did put a constraint on the response by specifying a limit on the number of words. Now remove that
+4. Notice that we did put a constraint on the response by specifying a limit on the number of words. Now remove that
 constraint, and see if the LLM gives you a better response. 
-
 You probably did reach your aim this time, but you probably got a list of meanings. 
 This is great, unless you were only aiming for one meaning.
 
-Now, ask the LLM again (without the word limit) and see if you get the same response. 
+5. Now, ask the LLM again (without the word limit) and see if you get the same response. 
 Broadly speaking, you might get the same response, but the LLM always uses different words to define the same concept.
 """
 

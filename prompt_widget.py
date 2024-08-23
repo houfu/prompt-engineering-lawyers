@@ -49,6 +49,7 @@ def simple_prompt(title, **kwargs):
         )
 
     exercise_container = st.container(border=True)
+    exercise_container.header(f"Exercise: {title}")
     with exercise_container.form(key=f"{content_key}-form"):
         prompt = st.text_area(
             "Prompt",
