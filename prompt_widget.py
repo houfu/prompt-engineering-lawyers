@@ -55,7 +55,7 @@ def simple_prompt(title, **kwargs):
             "Prompt",
             default_text,
             key=f"{content_key}-prompt",
-            height=200 if long else 100,
+            height=500 if long else None,
         )
         submitted = st.form_submit_button("Submit")
 

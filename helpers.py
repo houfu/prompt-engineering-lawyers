@@ -47,6 +47,7 @@ Prompt Engineering for Lawyers © 2023-2024 by Ang Hou Fu is licensed under Attr
 [![Repo](https://badgen.net/badge/icon/GitHub?icon=github&label)](https://github.com/houfu/prompt-engineering-lawyers) 
         """
     )
+    st.html('<a href="https://www.buymeacoffee.com/houfu"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a kopi (siu dai)&emoji=☕&slug=houfu&button_colour=5F7FFF&font_colour=ffffff&font_family=Lato&outline_colour=000000&coffee_colour=FFDD00" /></a>')
 
 
 def write_essay_page():
