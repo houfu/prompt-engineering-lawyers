@@ -47,7 +47,7 @@ def simple_prompt(title, **kwargs):
         )
 
     exercise_container = st.container(border=True)
-    exercise_container.header(f"Exercise: {title}")
+    exercise_container.subheader(f"Exercise: {title}")
     with exercise_container.form(key=f"{content_key}-form"):
         prompt = st.text_area(
             "Prompt",
@@ -157,7 +157,7 @@ def chat_prompt(title: str, **kwargs):
 
     # Create exercise container
     exercise_container = st.container(border=True)
-    exercise_container.header(f"Exercise: {title}")
+    exercise_container.subheader(f"Exercise: {title}")
 
     # Produce conversation history in container
     conversation = exercise_container.container()
@@ -242,7 +242,7 @@ def chat_prompt(title: str, **kwargs):
 
     col1, col2 = exercise_container.columns([1, 5])
     with col1:
-        reset = st.button("Reset")
+        reset = st.button("Reset", key=f"exercise-area-{title}-reset")
 
         if reset:
             st.session_state[content_key].append(history)

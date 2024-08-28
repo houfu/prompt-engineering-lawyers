@@ -70,8 +70,33 @@ data_pages = [
                 page_order=1,
                 path="content/pages/everything_in_context.py",
             ),
+            # Now this! Using LLMs for rewriting
+            Page(
+                title="Now this! Transforming text using LLMs.",
+                page_order=2,
+                path="content/pages/now_this.py",
+            ),
+            # Chat as memory
+            Page(
+                title="Chat as Memory",
+                page_order=3,
+                path="content/pages/chat_as_memory.py",
+            )
         ],
-    )
+    ),
+    Section(
+        title="Transforming Text using prompts, role-playing and more",
+        section_order=3,
+        pages=[
+            # Everything is a remix: Transformations with contract clauses
+            Page(
+                title="Everything is a Remix: Transforming contract clauses with LLMs",
+                page_order=0,
+                path="content/pages/everything_is_a_remix.py",
+                beta=True,
+            ),
+        ],
+    ),
 ]
 
 
