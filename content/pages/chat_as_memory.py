@@ -19,7 +19,10 @@ st.title("Chat as Memory")
 write_what_you_will_learn([
     "Introducing the chat interface",
     "Understand the usefulness of a chat history as a simple storage mechanism",
-    "Take notes during a court hearing and enhance them using a LLM"
+    "Take notes during a court hearing and enhance them using a LLM",
+    "Explore the differences between chat and completion interfaces",
+    "Understand the role of context in chat interfaces",
+    "Understand the potential of prompt engineering in chat interfaces for lawyers"
 ])
 
 st.header("Why is everything a chatbot?", divider=True)
@@ -136,5 +139,3 @@ In the next section, we will expand on the idea of chat to introduce another con
 """
 
 navigation_footer(PAGE_PATH)
-
-# TODO: Remember to add a link to the page in routes.py to make it accessible in the app.

@@ -205,7 +205,7 @@ def chat_prompt(title: str, **kwargs):
                     if step_text:
                         with step_area.container():
                             st.caption(f"Prompt for this step:")
-                            st.chat_message("user").write(f"**{step_text}**")
+                            st.chat_message("user").write(f"{step_text}")
 
             submitted = st.form_submit_button("Submit", type="primary")
 

@@ -23,7 +23,6 @@ st.title("Now this! Transforming text using LLMs.")
 write_what_you_will_learn([
    "Use prompts to transform text in a legal context",
     "Rewrite an email to get the tone you want",
-    "Make sense of a contract clause"
 ])
 
 """

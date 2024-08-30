@@ -81,7 +81,13 @@ data_pages = [
                 title="Chat as Memory",
                 page_order=3,
                 path="content/pages/chat_as_memory.py",
-            )
+            ),
+            # A role for the System
+            Page(
+                title="A role for the System",
+                page_order=4,
+                path="content/pages/a_role_for_the_system.py",
+            ),
         ],
     ),
     Section(

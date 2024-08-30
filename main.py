@@ -18,6 +18,7 @@ pg.run()
 
 
 with st.sidebar:
+    st.title("Prompt Engineering for Lawyers by Ang Hou Fu")
     if st.session_state["logged_in"]:
         st.write("You are logged in! :tada:")
         st.button("Log out", on_click=lambda: log_out())
