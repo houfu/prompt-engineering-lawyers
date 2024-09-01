@@ -1,165 +1,269 @@
-from enum import Enum
-from typing import Literal
+import datetime
+from typing import Optional, Literal, TypedDict, List, Union
 
 import openai
 import streamlit as st
-from streamlit_chat import message
+from pydantic import BaseModel
 
 
-class ExerciseType(Enum):
-    CHAT = 'chat'
-    SIMPLE_PROMPT = 'simple_prompt'
+def check_openai_key():
+    if st.session_state.get("openai_key", None) is None:
+        st.error(
+            """
+        This exercise will not be loaded as no OpenAI key was found.
 
-
-class OpenAIModel(Enum):
-    ChatGPT = 'gpt-3.5-turbo'
-    GPT4 = 'gpt-4'
-
-
-def simple_chat(content_key, **kwargs):
-    if content_key not in st.session_state:
-        st.session_state[content_key] = kwargs['messages'] if 'messages' in kwargs else []
-    model: OpenAIModel = kwargs['model'] if 'model' in kwargs else OpenAIModel.ChatGPT
-    reset_conversation = False
-    clear_form_key = f"{content_key}-clear"
-    if clear_form_key not in st.session_state:
-        st.session_state[clear_form_key] = False
-
-    if model == OpenAIModel.GPT4:
-        try:
-            openai.Model.retrieve(model)
-        except openai.InvalidRequestError:
-            st.error(
-                f"Your API Key doesn't have access to {OpenAIModel.GPT4.name}, which is required for this exercise. "
-                "The exercise will not load.", icon="😢")
-
-    exercise_container = st.container()
-    exercise_container.divider()
-
-    def get_text():
-        input_text = st.text_input("You: ", key=f"{content_key}-chat-input")
-        return input_text
-
-    def get_avatar(role) -> Literal["pixel-art-neutral", "bottts", "bottts-neutral"]:
-        if role == "user":
-            return "pixel-art-neutral"
-        elif role == "assistant":
-            return "bottts"
-        else:
-            return "bottts-neutral"
-
-    if st.session_state[clear_form_key]:
-        st.session_state[f"{content_key}-chat-input"] = ""
-        st.session_state[clear_form_key] = False
-
-    for index, content_message in enumerate(st.session_state[content_key]):
-        message_role = content_message["role"]
-        message(
-            content_message["content"],
-            is_user=message_role == "user",
-            avatar_style=get_avatar(message_role),
-            seed=38,
-            key=f"{content_key}-{index}"
+        Enter your API Key in the box at the top of this page and return here.
+        """,
+            icon="🤦‍♀️",
         )
-
-    user_input = get_text()
-
-    if user_input:
-        st.session_state[content_key].append({
-            "role": "user",
-            "content": user_input
-        })
-
-        with st.spinner(f"Now asking {model.name}."):
-            response = openai.ChatCompletion.create(
-                model=model.value,
-                messages=st.session_state[content_key]
-            )
-            st.session_state[content_key].append({
-                "role": "assistant",
-                "content": response['choices'][0]['message']['content']
-            })
-
-            st.session_state[clear_form_key] = True
-            st.experimental_rerun()
-
-    if content_key in st.session_state and len(st.session_state[content_key]) > 0:
-        reset_conversation = st.button("Reset conversation", key=f"{content_key}-reset")
-    else:
-        st.write('Enter some text to start a chat.')
-
-    if reset_conversation:
-        st.session_state[content_key] = kwargs['messages'] if 'messages' in kwargs else []
-        st.session_state[clear_form_key] = True
-
-    st.divider()
-
-    return exercise_container
+        return True
+    return False
 
 
-def simple_prompt(content_key, title, **kwargs):
-    default_text = kwargs['default_text'] if 'default_text' in kwargs else ''
-    long = kwargs['long'] if 'long' in kwargs else True
-    model: OpenAIModel = kwargs['model'] if 'model' in kwargs else OpenAIModel.ChatGPT
+class SimplePromptHistoryItem(BaseModel):
+    user: str
+    assistant: Optional[str] = None
+    date: datetime.datetime = datetime.datetime.now()
+
+
+def simple_prompt(title, **kwargs):
+    default_text = kwargs["default_text"] if "default_text" in kwargs else ""
+    long = kwargs["long"] if "long" in kwargs else True
+
+    if check_openai_key():
+        return
+
+    content_key = f"exercise-area-{title}-content"
+    history_key = f"exercise-area-{title}-history"
 
     if content_key not in st.session_state:
         st.session_state[content_key] = []
 
-    exercise_container = st.container()
-    exercise_container.divider()
-    with exercise_container.form(f"exercise-area-{title}"):
-        prompt = st.text_area(
-            value=default_text,
-            label="Prompt",
-            height=550 if long else None,
-            max_chars=2500
+    if history_key not in st.session_state:
+        st.session_state[history_key] = (
+            len(st.session_state[content_key])
+            if len(st.session_state[content_key]) > 0
+            else 1
         )
-        submitted = st.form_submit_button("Submit")
-        if model == "gpt-4":
-            try:
-                openai.Model.retrieve(model)
-            except openai.InvalidRequestError:
-                st.error(f"Your API Key doesn't have access to {model.name}, which is required for this exercise. "
-                         "The exercise will not load.", icon="😢")
-        if submitted:
-            with st.spinner(f"Now asking {model.name}."):
-                response = openai.ChatCompletion.create(
-                    model=model.value,
-                    messages=[
-                        {"role": "user", "content": prompt}
-                    ]
-                )
-                content = (prompt, response.choices[0].message.content)
-                st.session_state[content_key] += [content]
 
-    if len(st.session_state[content_key]) > 1:
-        content_container = exercise_container.container()
-        value = exercise_container.slider("Generation index", 1, len(st.session_state[content_key]),
-                                          len(st.session_state[content_key]),
-                                          label_visibility="collapsed",
-                                          key=f"exercise-area-{title}-slider")
-        content_container.caption(":green[Generations - use the slider to browse previously generated text]")
-        content_container.caption(f"You asked: **{st.session_state[content_key][value - 1][0]}**")
-        content_container.write(st.session_state[content_key][value - 1][1])
-    elif len(st.session_state[content_key]) > 0:
-        exercise_container.write(st.session_state[content_key][0][1])
-    else:
-        exercise_container.write(
-            f"☝️ Input your prompt and click the submit the button to generate the text from {model.name}.")
-    exercise_container.divider()
+    exercise_container = st.container(border=True)
+    exercise_container.subheader(f"Exercise: {title}")
+    with exercise_container.form(key=f"{content_key}-form"):
+        prompt = st.text_area(
+            "Prompt",
+            default_text,
+            key=f"{content_key}-prompt",
+            height=500 if long else None,
+        )
+        submitted = st.form_submit_button("Submit", type="primary")
+
+        if submitted:
+            st.session_state[content_key].append(SimplePromptHistoryItem(user=prompt))
+            st.session_state[history_key] = len(st.session_state[content_key])
+
+    with exercise_container:
+        if len(st.session_state[content_key]) > 0:
+            current_history_item = st.session_state[content_key][
+                st.session_state[history_key] - 1
+            ]
+            with st.chat_message("user"):
+                st.caption(
+                    f"On {current_history_item.date.strftime('%B %d, %Y at %I:%M%p')}"
+                )
+                st.write(current_history_item.user)
+
+            if current_history_item.assistant:
+                st.chat_message("assistant").write(current_history_item.assistant)
+            else:
+
+                client = openai.Client(api_key=st.session_state.openai_key)
+
+                with st.chat_message("assistant"):
+                    stream = client.chat.completions.create(
+                        model="gpt-4o-mini",
+                        messages=[{"role": "user", "content": prompt}],
+                        stream=True,
+                    )
+                    response = st.write_stream(stream)
+
+                current_history_item.assistant = response
+
+                st.session_state[content_key][
+                    st.session_state[history_key] - 1
+                ] = current_history_item
+
+        def update_history_key():
+            st.session_state[history_key] = st.session_state[
+                f"exercise-area-{title}-slider"
+            ]
+
+        if len(st.session_state[content_key]) > 1:
+            st.slider(
+                "History",
+                1,
+                len(st.session_state[content_key]),
+                st.session_state[history_key],
+                key=f"exercise-area-{title}-slider",
+                on_change=update_history_key,
+            )
+
     return exercise_container
 
 
-def exercise_area(title="Exercise", exercise_type: ExerciseType = ExerciseType.SIMPLE_PROMPT, **kwargs):
-    if st.session_state.get("api_success", False) is False:
-        return st.error("""
-        This exercise will not be loaded as no OpenAI key was found.
+CHAT_PROMPT_ROLE = Literal["user", "assistant", "system"]
 
-        Enter your API Key in the box at the top of this page and return here.
-        """, icon="🤦‍♀️")
+
+class ChatPromptMessage(TypedDict):
+    role: CHAT_PROMPT_ROLE
+    content: str
+
+
+def chat_prompt(title: str, **kwargs):
+    history: List[ChatPromptMessage] = kwargs.get("history", [])
+    steps: Union[List[str]] = kwargs.get("steps", [])
+    long = kwargs.get("long", False)
+
+    if not isinstance(history, list) or not all(
+        isinstance(item, dict) and "role" in item and "content" in item
+        for item in history
+    ):
+        raise TypeError("history must be a list of ChatPromptMessage objects")
+
+    if not isinstance(steps, list) or not all(isinstance(item, str) for item in steps):
+        raise TypeError("steps must be a list of strings")
+
+    if check_openai_key():
+        return
+
+    # Initialize
+
     content_key = f"exercise-area-{title}-content"
+    history_key = f"exercise-area-{title}-history"
+    steps_key = f"exercise-area-{title}-steps"
 
-    if exercise_type == ExerciseType.CHAT:
-        return simple_chat(content_key, **kwargs)
-    else:
-        return simple_prompt(content_key, title, **kwargs)
+    if content_key not in st.session_state:
+        st.session_state[content_key] = []
+        st.session_state[content_key].append(history)
+
+    if history_key not in st.session_state:
+        st.session_state[history_key] = 1
+
+    if steps_key not in st.session_state:
+        st.session_state[steps_key] = [0]
+
+    # Set messages to correct history
+
+    messages = st.session_state[content_key][st.session_state[history_key] - 1]
+
+    # Create exercise container
+    exercise_container = st.container(border=True)
+    exercise_container.subheader(f"Exercise: {title}")
+
+    # Produce conversation history in container
+    conversation = exercise_container.container()
+
+    with conversation:
+        for message in messages:
+            with st.chat_message(message["role"]):
+                st.write(message["content"])
+
+    # Create form area
+    def get_form_area(prompt=None):
+        with st.form(key=f"{content_key}-form", clear_on_submit=True):
+
+            step_area = st.empty()
+
+            prompt = st.text_area(
+                "Prompt",
+                prompt if prompt else "",
+                key=f"{content_key}-prompt",
+                height=500 if long else None,
+            )
+
+            if (
+                len(steps) > 0
+                and st.session_state[steps_key][st.session_state[history_key] - 1] == 0
+            ):
+                with step_area.container():
+                    st.caption(f"Prompt for this step:")
+                    st.chat_message("user").write(steps[0])
+
+            def update_step():
+                if len(steps) > 0:
+                    step_text = (
+                        steps[
+                            st.session_state[steps_key][
+                                st.session_state[history_key] - 1
+                            ]
+                        ]
+                        if st.session_state[steps_key][
+                            st.session_state[history_key] - 1
+                        ]
+                        < len(steps)
+                        else ""
+                    )
+                    if step_text:
+                        with step_area.container():
+                            st.caption(f"Prompt for this step:")
+                            st.chat_message("user").write(f"{step_text}")
+
+            submitted = st.form_submit_button("Submit", type="primary")
+
+            if submitted:
+                messages.append({"role": "user", "content": prompt})
+
+                if len(steps) > 0:
+                    st.session_state[steps_key][st.session_state[history_key] - 1] += 1
+
+                update_step()
+
+                client = openai.Client(api_key=st.session_state.openai_key)
+
+                with conversation:
+                    st.chat_message("user").write(prompt)
+                    with st.chat_message("assistant"):
+                        stream = client.chat.completions.create(
+                            model="gpt-4o-mini",
+                            messages=messages,
+                            stream=True,
+                        )
+                        response = st.write_stream(stream)
+
+                messages.append({"role": "assistant", "content": response})
+
+                st.session_state[content_key][
+                    st.session_state[history_key] - 1
+                ] = messages
+
+    form_area = exercise_container.empty()
+
+    with form_area:
+        get_form_area()
+
+    col1, col2 = exercise_container.columns([1, 5])
+    with col1:
+        reset = st.button("Reset", key=f"exercise-area-{title}-reset")
+
+        if reset:
+            st.session_state[content_key].append(history)
+            st.session_state[history_key] = len(st.session_state[content_key])
+            st.session_state[steps_key].append(0)
+            st.rerun()
+
+    with col2:
+
+        def update_history_key():
+            st.session_state[history_key] = st.session_state[
+                f"exercise-area-{title}-slider"
+            ]
+            st.rerun()
+
+        if len(st.session_state[content_key]) > 1:
+            st.slider(
+                "History",
+                1,
+                len(st.session_state[content_key]),
+                st.session_state[history_key],
+                key=f"exercise-area-{title}-slider",
+                on_change=update_history_key,
+            )
